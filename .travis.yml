@@ -1,36 +1,53 @@
 # в основном отсюда https://habr.com/ru/post/329264/
-
 dist:     trusty    # используем Ubuntu 14.04 Trusty Tahr (а не 12.02 Precise Pangolin)
 sudo:     required  # используем Virtual Machine (а не Docker container)
 
-language: cpp 
+language: cpp
 
 os:
     - linux
+    - osx
 
 compiler:
     - gcc
+
+env:
+    # список переменных окружения, влияющих на матрицу сборки:
+    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Debug
+    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release
+    - TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+    - TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+
+matrix:
+    exclude:
+        # вручную исключим ненужные элементы из матрицы сборки:
+        - os:       osx
+          compiler: gcc
+
+        - os:  osx
+          env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+
+        - os:  osx
+          env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
 install:
     # скрипт настройки среды и установки зависимостей:
     - source ci/travis/install-$TRAVIS_OS_NAME.sh
 
 script:
-    # скрипт сборки
+    # скрипт сборки и тестирования проекта:
     - rm -r build
     - mkdir build
     - cmake -B build &&
     - cd build &&
-
     - make tests_gcovr_parall &&
     - make tests_gcovr_cons &&
 
     - make main_consistent &&
     - make main_parallel &&
 
-test_script:
     - cppcheck ../*.c &&
-    ###тесты
+    #тесты
     - valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_cons &&
     - valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_parall &&
 
@@ -38,7 +55,7 @@ test_script:
 
     - cd ..
 
-    ###стресс тест
+    # стресс тест
     - echo "----"
     - gcc generate_long_input.c -o gen_rand &&
     - ./gen_rand &&
@@ -51,5 +68,4 @@ test_script:
     - rm long_input
     - cat temp_output | grep time -B1
     - cat temp_output | grep output | awk '{print $2,$3}' | tr '\n' ' '| awk '$1 == $3 && $2 == $4 { print "----\nРезультат работы обеих программ одинаков"}'
-    - 
-    rm temp_output
+    - rm temp_output
