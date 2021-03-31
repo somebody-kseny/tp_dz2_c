@@ -44,9 +44,9 @@ jobs:
       - run: tree ../../
       - run: sudo apt-get install -y valgrind
       - run: sudo apt-get install -y gcovr
-      - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./build/tests_gcovr_cons
-      - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./build/tests_gcovr_parall
-      - run: gcovr -r .. .
+      - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_cons
+      - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_parall
+      - run: gcovr -r .
   stress_test:
     runs-on: ubuntu-latest
     needs: [build]
