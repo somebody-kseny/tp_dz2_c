@@ -8,6 +8,8 @@ jobs:
         uses: actions/checkout@v2
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y cppcheck
+      - run: sudo apt-get install -y tree
+      - run: tree -a -P *.c /
       - run: cppcheck main.c parallel.c consistent.c
   build:
     runs-on: ubuntu-latest
