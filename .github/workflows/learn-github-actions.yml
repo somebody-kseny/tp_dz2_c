@@ -18,6 +18,7 @@ jobs:
       - run: sudo apt-get install -y cppcheck
       - run: cppcheck main.c parallel.c consistent.c
       - run: sudo apt-get install -y cmake
+      - run: sudo apt-get install -y libgtest-dev
       - run: cmake -B build
       - run: cd build
       - run: cmake --build .
@@ -26,6 +27,8 @@ jobs:
     needs: [build]
     steps:
       - run: pwd
+      - run: sudo apt-get install -y valgrind
+      - run: sudo apt-get install -y gcovr
       - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_cons
       - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_parall
       - run: gcovr -r .. .
