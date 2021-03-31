@@ -23,7 +23,7 @@ jobs:
       - run: mkdir ../builddir
       - run: cd ../builddir
       - run: ls -la
-      - run: cmake ..
+      - run: cmake .
       - run: cmake --build .
   unit_tests_valgrind_gcovr:
     runs-on: ubuntu-latest
