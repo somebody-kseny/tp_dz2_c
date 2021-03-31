@@ -4,6 +4,8 @@ jobs:
   cppcheck:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y cppcheck
       - run: cppcheck main.c parallel.c consistent.c
