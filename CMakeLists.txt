@@ -5,12 +5,12 @@ add_compile_options("--coverage")
 
 set(CMAKE_C_STANDART 11)
 set(CMAKE_C_STANDART_REQUIRED ON)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wpedantic -ggdb3 -fprofile-generate -fprofile-arcs -ftest-coverage -fPIC -O0")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -ggdb3 -fprofile-generate -fprofile-arcs -ftest-coverage -fPIC -O0 -rdynamic")
 
 include_directories ("./include") 
 
 add_library( consistent_static_lib STATIC ${PROJECT_SOURCE_DIR}/consistent.c)
-add_executable(main_consistent ${PROJECT_SOURCE_DIR}/main.c )
+add_executable(main_consistent ${PROJECT_SOURCE_DIR}/main.c)
 target_link_libraries(main_consistent consistent_static_lib)
 
 add_library( parallel_shared_lib SHARED ${PROJECT_SOURCE_DIR}/parallel.c )	

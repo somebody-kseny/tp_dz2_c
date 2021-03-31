@@ -6,11 +6,7 @@
 #mkdir build
 cmake -B build &&
 cd build &&
-make tests_gcovr_parall &&
-make tests_gcovr_cons &&
-
-make main_consistent &&
-make main_parallel &&
+cmake --build . --clean-first
 
 cppcheck ../*.c &&
 #тесты
