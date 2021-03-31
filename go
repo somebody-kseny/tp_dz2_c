@@ -2,8 +2,8 @@
 
 # скрипт который был для запуска на своем компе
 
-rm -r build
-mkdir build
+#rm -r build
+#mkdir build
 cmake -B build &&
 cd build &&
 make tests_gcovr_parall &&
@@ -32,6 +32,7 @@ echo "----" >> temp_output
 echo "parallel:" >> temp_output
 ./build/main_parallel long_input >> temp_output &&
 rm long_input
+rm gen_rand
 cat temp_output | grep time -B1
 cat temp_output | grep output | awk '{print $2,$3}' | tr '\n' ' '| awk '$1 == $3 && $2 == $4 { print "----\nРезультат работы обеих программ одинаков"}'
 rm temp_output
