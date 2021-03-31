@@ -19,9 +19,9 @@ jobs:
       - run: cppcheck main.c parallel.c consistent.c
       - run: sudo apt-get install -y cmake
       - run: sudo apt-get install -y libgtest-dev
-      - run: mkdir builddir
-      - run: cd builddir
-      - run: cmake ..
+      - run: mkdir ../builddir
+      - run: cd ../builddir
+      - run: cmake ../tp_dz_2
       - run: cmake --build .
   unit_tests_valgrind_gcovr:
     runs-on: ubuntu-latest
