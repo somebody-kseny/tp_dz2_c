@@ -1,7 +1,5 @@
 name: learn-github-actions
-on:
-  pull_request:
-    types: [assigned, opened, synchronize, reopened]
+on: [push]
 jobs:
   cppcheck:
     runs-on: ubuntu-latest
