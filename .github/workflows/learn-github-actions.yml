@@ -12,6 +12,7 @@ jobs:
     steps:
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y cppcheck
+      - run: pwd && ls -la
       - run: cmake -B build
       - run: cd build
       - run: make main_consistent
