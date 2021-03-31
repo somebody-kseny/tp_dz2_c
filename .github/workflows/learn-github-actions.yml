@@ -35,6 +35,8 @@ jobs:
     steps:
       - run: pwd
       - run: ls -la
+      - run: sudo apt-get install -y tree
+      - run: tree
       - run: sudo apt-get install -y valgrind
       - run: sudo apt-get install -y gcovr
       - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./build/tests_gcovr_cons
