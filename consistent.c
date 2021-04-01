@@ -22,7 +22,7 @@ StartEnd find_max_seq(Seq input){
             break;
         }
     }
-    //printf("start: %i, end: %i\n", start, end);
+    
     StartEnd st_end = {start, end};
     return st_end;
 }
