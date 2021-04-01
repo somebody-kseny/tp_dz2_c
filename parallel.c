@@ -15,8 +15,7 @@ static int get_res(StartEnd *, const int, const int);
 
 StartEnd find_max_seq(Seq input){
     
-    //int num_of_process = sysconf(_SC_NPROCESSORS_ONLN)-1;
-    int num_of_process = 5;
+    int num_of_process = sysconf(_SC_NPROCESSORS_ONLN)-1;
     int len_part_std = input.len / num_of_process;
 
     char* seq_part;
