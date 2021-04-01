@@ -58,8 +58,10 @@ jobs:
           name: builted
       - run: gcc generate_long_input.c -o gen_rand
       - run: ./gen_rand
-      - run: ./build/main_consistent long_input > temp_output
-      - run: ./build/main_parallel long_input >> temp_output
+      - run: echo "consistent:" > temp_output
+      - run: ./main_consistent long_input >> temp_output
+      - run: echo "parallel:" >> temp_output
+      - run: ./main_parallel long_input >> temp_output
       - run: echo "ниже выводится время работы разных алгоритмов"
       - run: cat temp_output | grep time -B1
       - run: echo "ниже выводится сравнение результатов работы разных алгоритмов"
