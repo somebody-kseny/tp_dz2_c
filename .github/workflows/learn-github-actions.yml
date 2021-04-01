@@ -58,6 +58,8 @@ jobs:
           name: builted
       - run: gcc generate_long_input.c -o gen_rand
       - run: ./gen_rand
+      - run: chmod +x ./main_consistent
+      - run: chmod +x ./main_parallel
       - run: echo "consistent:" > temp_output
       - run: ./main_consistent long_input >> temp_output
       - run: echo "parallel:" >> temp_output
