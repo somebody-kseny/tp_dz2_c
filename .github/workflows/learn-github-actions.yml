@@ -1,0 +1,64 @@
+name: learn-github-actions
+on: [push]
+jobs:
+  cppcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install -y cppcheck
+      - run: cppcheck main.c parallel.c consistent.c
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install -y cppcheck
+      - run: cppcheck main.c parallel.c consistent.c
+      - run: sudo apt-get install -y cmake
+      - run: sudo apt-get install -y libgtest-dev
+      - run: ls -la
+      - run: mkdir ../builddir
+      - run: cd ../builddir
+      - run: ls -la
+      - run: cmake .
+      - run: cmake --build .
+      - uses: actions/upload-artifact@v2
+        with:
+          name: builted
+          path: .
+  unit_tests_valgrind_gcovr:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: builted
+      - run: sudo apt-get install -y valgrind
+      - run: sudo apt-get install -y gcovr
+      - run: chmod +x ./tests_gcovr_cons
+      - run: chmod +x ./tests_gcovr_parall
+      - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_cons
+      - run: valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes ./tests_gcovr_parall
+      - run: gcovr -r . 2> /dev/null
+  stress_test:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: builted
+      - run: gcc generate_long_input.c -o gen_rand
+      - run: ./gen_rand
+      - run: chmod +x ./main_consistent
+      - run: chmod +x ./main_parallel
+      - run: echo "consistent:" > temp_output
+      - run: ./main_consistent long_input >> temp_output
+      - run: echo "parallel:" >> temp_output
+      - run: ./main_parallel long_input >> temp_output
+      - run: echo "ниже выводится время работы разных алгоритмов"
+      - run: cat temp_output | grep time -B1
+      - run: echo "ниже выводится сравнение результатов работы разных алгоритмов"
+      - run: cat temp_output | grep output | awk '{print $2,$3}' | tr '\n' ' '| awk '$1 == $3 && $2 == $4 { print "----\nРезультат работы обеих программ одинаков"}'
